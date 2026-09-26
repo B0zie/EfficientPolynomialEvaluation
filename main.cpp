@@ -20,15 +20,21 @@ int BruteForce(vector<int> P,int x){
    return p;
 }
 
+void TestBruteForce(){
+   vector<int> P;
+   P = {1,1,2,3};
+   assert(BruteForce(P,2) == 35);
 
-
+   cout << "BruteForce Function Testing Passed!" << endl;
+}
 
 
 int main () {
 	int n;
 	int x;
    vector<int> P;
-   
+
+   TestBruteForce(); 
    cin >> x >> n; 
 
    for(int i = 0; i <= n; ++i) {
