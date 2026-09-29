@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 vector<int> GetCoefficients(int n){
    vector<int> P;
@@ -14,8 +16,8 @@ vector<int> GetCoefficients(int n){
   return P; 
 }
 
-//page 239
-int BruteForce(int x, int n){
+//example of overflow scenario
+int BruteForceOverflow(int x, int n){
    vector<int> P = GetCoefficients(n);
    int p = 0;//init sum val to 0  
 
@@ -32,11 +34,29 @@ int BruteForce(int x, int n){
 }
 
 
+
+//p236
+int BruteForce(int x, int n){
+   vector<int> P = GetCoefficients(n);
+   long long p = 0;//init sum val to 0  
+
+   for (int i = n; i >= 0; --i ){
+      long long  power = 1;//init multiplication val by 1
+
+      for(int j = 1; j <= i; ++j ){
+         power = power * x;
+      }
+      p = p + P.at(i) * power;
+   } 
+
+   return p;
+}
+
 //Walk through with paper
 //Mark page number
 int Horners(int x,int n){
    vector<int> P = GetCoefficients(n);   
-   int p = P.at(n);  // p <- P[n]
+   long long p = P.at(n);  // p <- P[n]
 
    for(int i = n-1; i >= 0; --i){
       p = x * p + P[i];
@@ -65,10 +85,10 @@ int RepeatedSquaring(int x, int n){
 
 }
 
-int RepeatedSquringAlg(int x, int n){
-  
-
-}
+//int RepeatedSquringAlg(int x, int n){
+//  
+//
+//}
 
 void TestBruteForce(){
    assert(BruteForce(2,3) == 35);
@@ -89,10 +109,25 @@ int main () {
 	int n;
 	int x;
 
-   TestBruteForce(); 
-   TestHorners();
-   TestRepeatedSquaring();
+   //TestBruteForce(); 
+   //TestHorners();
+  //TestRepeatedSquaring();
+   cout << "x = " ;
+   cin >> x;
+   cout << "n = " ;
+   cin >> n;
 
+
+   cout << "BruteForceOverflow -> " << BruteForceOverflow(x,n) << endl;
+
+   auto start = high_resolution_clock::now();
+   cout << "BruteForce = " << BruteForce(x,n) << endl;
+   auto end = high_resolution_clock::now();
+   auto duration = duration_cast<microseconds>(end - start);
+   cout << "BruteForce: " << duration.count() << "ms" << endl;
+
+
+   
   
    return 0;
 }
