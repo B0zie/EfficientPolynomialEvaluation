@@ -15,6 +15,24 @@ vector<long> GetCoefficients(long n){
    }
   return P; 
 }
+//example of overflow scenario
+//x = 9223372036854775807
+//n = 1
+//this will set sign bit to 1 
+long BruteForceOverflow(long x, long n){
+   vector<long> P = GetCoefficients(n);
+   long p = 0;//init sum val to 0  
+
+   for (int i = n; i >= 0; --i ){
+      long power = 1;//init multiplication val by 1
+      for(int j = 1; j <= i; ++j ){
+         power = power * x;
+      }
+      p = p + P.at(i) * power;
+   } 
+
+   return p;
+}
 
 //Handled with header file
 BigInt BruteForce(long x, long n){
@@ -32,23 +50,6 @@ BigInt BruteForce(long x, long n){
 
    return p;
 }
-//example of overflow scenario
-long BruteForceOverflow(long x, long n){
-   vector<long> P = GetCoefficients(n);
-   long p = 0;//init sum val to 0  
-
-   for (int i = n; i >= 0; --i ){
-      long power = 1;//init multiplication val by 1
-      for(int j = 1; j <= i; ++j ){
-         power = power * x;
-      }
-      p = p + P.at(i) * power;
-   } 
-
-   return p;
-}
-
-
 
 //Walk through with paper
 //Mark page number
