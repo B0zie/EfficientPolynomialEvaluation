@@ -5,8 +5,8 @@
 using namespace std;
 using namespace std::chrono;
 
-vector<int> GetCoefficients(int n){
-   vector<int> P;
+vector<long> GetCoefficients(long n){
+   vector<long> P;
    for(int i = 0; i <= n; ++i) {
       if(i == 0) 
         P.push_back(1);
@@ -17,8 +17,8 @@ vector<int> GetCoefficients(int n){
 }
 
 //Handled with header file
-BigInt BruteForce(int x, int n){
-   vector<int> P = GetCoefficients(n);
+BigInt BruteForce(long x, long n){
+   vector<long> P = GetCoefficients(n);
    BigInt p = 0;//init sum val to 0  
 
    for (int i = n; i >= 0; --i ){
@@ -33,13 +33,12 @@ BigInt BruteForce(int x, int n){
    return p;
 }
 //example of overflow scenario
-int BruteForceOverflow(int x, int n){
-   vector<int> P = GetCoefficients(n);
-   int p = 0;//init sum val to 0  
+long BruteForceOverflow(long x, long n){
+   vector<long> P = GetCoefficients(n);
+   long p = 0;//init sum val to 0  
 
    for (int i = n; i >= 0; --i ){
-      int power = 1;//init multiplication val by 1
-
+      long power = 1;//init multiplication val by 1
       for(int j = 1; j <= i; ++j ){
          power = power * x;
       }
@@ -53,8 +52,8 @@ int BruteForceOverflow(int x, int n){
 
 //Walk through with paper
 //Mark page number
-BigInt Horners(int x,int n){
-   vector<int> P = GetCoefficients(n);   
+BigInt Horners(long x,long n){
+   vector<long> P = GetCoefficients(n);   
    BigInt p = P.at(n);  // p <- P[n]
 
    for(int i = n-1; i >= 0; --i){
@@ -65,7 +64,7 @@ BigInt Horners(int x,int n){
 
 
 //evaluates monomial
-int RepeatedSquaring(int x, int n){
+int RepeatedSquaring(long x, long n){
    int prod;
    int result;
    
@@ -90,8 +89,8 @@ int RepeatedSquaring(int x, int n){
 //}
 
 int main () {
-	int n;
-	int x;
+	long n;
+	long x;
 
    cout << "x = " ;
    cin >> x;
@@ -99,15 +98,14 @@ int main () {
    cin >> n;
 
 
-   cout << "BruteForceOverflow -> " << BruteForceOverflow(x,n) << endl;
-   
-   auto start = high_resolution_clock::now();
-   cout << BruteForce(x,n) << endl;
-   auto end = high_resolution_clock::now();
-   auto duration = duration_cast<microseconds>(end - start);
-   cout << "BruteForce: " << duration.count() << "ms" << endl;
+   cout << "BruteForce OverFlow -> " << BruteForceOverflow(x,n) << endl;   
+   //auto start = high_resolution_clock::now();
+   //cout << BruteForce(x,n) << endl;
+   //auto end = high_resolution_clock::now();
+   //auto duration = duration_cast<microseconds>(end - start);
+  // cout << "BruteForce: " << duration.count() << "ms" << endl;
 
-   cout <<Horners(x,n) << endl;
+   //cout <<Horners(x,n) << endl;
 
    
   
