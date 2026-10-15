@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <chrono>
 #include "BigInt.hpp"
@@ -14,6 +15,15 @@ vector<long> GetCoefficients(long n){
         P.push_back(i);
    }
   return P; 
+}
+
+long DigitCount(BigInt num){
+   long count = 0;
+
+   for(auto c : num.to_string()) {
+      ++count;
+   }	
+   return count;
 }
 //example of overflow scenario
 //x = 9223372036854775807
@@ -92,23 +102,24 @@ int RepeatedSquaring(long x, long n){
 int main () {
 	long n;
 	long x;
-
+   BigInt bruteForceNum;
    cout << "x = " ;
    cin >> x;
    cout << "n = " ;
    cin >> n;
 
 
-   cout << "BruteForce OverFlow -> " << BruteForceOverflow(x,n) << endl;   
-   //auto start = high_resolution_clock::now();
-   //cout << BruteForce(x,n) << endl;
-   //auto end = high_resolution_clock::now();
-   //auto duration = duration_cast<microseconds>(end - start);
-  // cout << "BruteForce: " << duration.count() << "ms" << endl;
-
+   cout << "BruteForce OverFlow -> " << BruteForceOverflow(x,n) << endl;
+   
+   auto start = high_resolution_clock::now();
+   bruteForceNum = BruteForce(x,n);
+   cout << bruteForceNum << endl;
+   auto end = high_resolution_clock::now();
+   auto duration = duration_cast<microseconds>(end - start);
+   cout << "BruteForce: " << duration.count() << "ms" << endl;
+   cout << "BruteForceDigits: " << DigitCount(bruteForceNum) << endl;
+   
    //cout <<Horners(x,n) << endl;
 
-   
-  
    return 0;
 }
