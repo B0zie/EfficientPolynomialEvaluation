@@ -103,14 +103,15 @@ void CompareRandDigitRange (BigInt bruteForce, BigInt horner, BigInt repeatedSqu
    srand(13);  
    int a = ((rand()%101)+100);//Random number 100-200
    int b = a + 20;
-   cout << "a=" << a << endl;
-   cout << "b=" << b << endl;
+   //cout << bruteForce.to_string().size() << endl;
+   //cout << horner.to_string().size() << endl;
+   //cout << repeatedSquaring.to_string().size() << endl;
    if((bruteForce.to_string().size() == horner.to_string().size()) && (horner.to_string().size() == repeatedSquaring.to_string().size())){
      long m = bruteForce.to_string().size();
-       cout << "success: Digits Length Match!";
-       cout << bruteForce.to_string().substr(a,b);
-       cout << horner.to_string().substr(a,b);
-       cout << repeatedSquaring.to_string().substr(a,b);
+       cout << "success: Digits Length Match!" << endl;
+       cout << "BruteForce chunk ->" << bruteForce.to_string().substr(a,b) << endl;
+       cout << "Horner chunk     ->" << horner.to_string().substr(a,b) << endl;
+       cout << "RepeatedSQ chunk ->" <<repeatedSquaring.to_string().substr(a,b) << endl;
       
    }
    else
@@ -136,17 +137,22 @@ int main () {
    
    auto start = high_resolution_clock::now();
    bruteForceNum = BruteForce(x,n);
-   cout << bruteForceNum << endl;
    auto end = high_resolution_clock::now();
    auto duration = duration_cast<microseconds>(end - start);
    cout << "BruteForce: " << duration.count() << "ms" << endl;
    
+   start = high_resolution_clock::now();
    hornerNum = Horners(x,n);
-   cout << hornerNum << endl;
+   end = high_resolution_clock::now();
+   duration = duration_cast<microseconds>(end - start);
+   cout << "Horners: " << duration.count() << "ms" << endl;
 
+   start = high_resolution_clock::now();
    repeatedSquaringNum = RepeatedSquaring(x,n);
-   cout << repeatedSquaringNum << endl;
- 
+   end = high_resolution_clock::now();
+   duration = duration_cast<microseconds>(end - start);
+   cout << "Repeated Squaring: " << duration.count() << "ms" << endl;
+
    CompareRandDigitRange(bruteForceNum,hornerNum,repeatedSquaringNum);
    return 0;
 }
