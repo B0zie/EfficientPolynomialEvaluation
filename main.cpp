@@ -17,14 +17,7 @@ vector<long> GetCoefficients(long n){
   return P; 
 }
 
-long DigitCount(BigInt num){
-   long count = 0;
 
-   for(auto c : num.to_string()) {
-      ++count;
-   }	
-   return count;
-}
 //example of overflow scenario
 //x = 9223372036854775807
 //n = 1
@@ -75,16 +68,16 @@ BigInt Horners(long x,long n){
 
 
 //evaluates monomial
-int RepeatedSquaring(long x, long n){
-   int prod;
-   int result;
+BigInt RepeatedSquaringMono(long x, long n){
+   BigInt prod;
+   BigInt result;
    
    if(n == 0)
       return 1;
    else if (n == 1)
       return x;
    else{
-      prod = RepeatedSquaring(x,n/2);
+      prod = RepeatedSquaringMono(x,n/2);
       result = prod * prod;
    }
    if((n%2) == 1)
@@ -93,16 +86,46 @@ int RepeatedSquaring(long x, long n){
    return result;
 
 }
+//Adds its evaluated monimial 
+BigInt RepeatedSquaring(long x, long n){
+  BigInt sum = 0;
+  while(n>=0){
+    if(n!=0)
+       sum += (n * RepeatedSquaringMono(x,n));
+    else
+       sum += RepeatedSquaringMono(x,n);
+    --n;
+  }
+  return sum;
+}
 
-//int RepeatedSquringAlg(int x, int n){
-//  
-//
-//}
+void CompareRandDigitRange (BigInt bruteForce, BigInt horner, BigInt repeatedSquaring){
+   srand(13);  
+   int a = ((rand()%101)+100);//Random number 100-200
+   int b = a + 20;
+   cout << "a=" << a << endl;
+   cout << "b=" << b << endl;
+   if((bruteForce.to_string().size() == horner.to_string().size()) && (horner.to_string().size() == repeatedSquaring.to_string().size())){
+     long m = bruteForce.to_string().size();
+       cout << "success: Digits Length Match!";
+       cout << bruteForce.to_string().substr(a,b);
+       cout << horner.to_string().substr(a,b);
+       cout << repeatedSquaring.to_string().substr(a,b);
+      
+   }
+   else
+      cout << "Error: Digits do not match!";
+}
+
 
 int main () {
 	long n;
 	long x;
    BigInt bruteForceNum;
+   BigInt hornerNum;
+   BigInt repeatedSquaringNum;
+
+   
    cout << "x = " ;
    cin >> x;
    cout << "n = " ;
@@ -117,9 +140,13 @@ int main () {
    auto end = high_resolution_clock::now();
    auto duration = duration_cast<microseconds>(end - start);
    cout << "BruteForce: " << duration.count() << "ms" << endl;
-   cout << "BruteForceDigits: " << DigitCount(bruteForceNum) << endl;
    
-   //cout <<Horners(x,n) << endl;
+   hornerNum = Horners(x,n);
+   cout << hornerNum << endl;
 
+   repeatedSquaringNum = RepeatedSquaring(x,n);
+   cout << repeatedSquaringNum << endl;
+ 
+   CompareRandDigitRange(bruteForceNum,hornerNum,repeatedSquaringNum);
    return 0;
 }
